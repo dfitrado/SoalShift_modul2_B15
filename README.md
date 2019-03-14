@@ -32,10 +32,10 @@ Buatlah program C yang dapat :
 i)  mengekstrak file zip tersebut.
 ii) menyimpan daftar file dari folder “campur2” yang memiliki ekstensi .txt ke dalam file daftar.txt. 
 Catatan:  
-Gunakan fork dan exec.
-Gunakan minimal 3 proses yang diakhiri dengan exec.
-Gunakan pipe
-Pastikan file daftar.txt dapat diakses dari text editor
+- Gunakan fork dan exec.
+- Gunakan minimal 3 proses yang diakhiri dengan exec.
+- Gunakan pipe
+- Pastikan file daftar.txt dapat diakses dari text editor
 
 ### JAWAB:
 
@@ -51,8 +51,8 @@ File makan_enak.txt terakhir dibuka pada detik ke-1
 Pada detik ke-10 terdapat file makan_sehat1.txt dan makan_sehat2.txt
 
 Catatan: 
-dilarang menggunakan crontab
-Contoh nama file : makan_sehat1.txt, makan_sehat2.txt, dst
+- dilarang menggunakan crontab
+- Contoh nama file : makan_sehat1.txt, makan_sehat2.txt, dst
 
 ### JAWAB:
 
@@ -60,13 +60,13 @@ Contoh nama file : makan_sehat1.txt, makan_sehat2.txt, dst
 
 
 ## NO5
-Kerjakan poin a dan b di bawah:
-a. Buatlah program c untuk mencatat log setiap menit dari file log pada syslog ke /home/[user]/log/[dd:MM:yyyy-hh:mm]/log#.log
+Kerjakan poin 1 dan 2 di bawah:
+1. Buatlah program c untuk mencatat log setiap menit dari file log pada syslog ke /home/[user]/log/[dd:MM:yyyy-hh:mm]/log#.log
 Ket:
 - Per 30 menit membuat folder /[dd:MM:yyyy-hh:mm]
 - Per menit memasukkan log#.log ke dalam folder tersebut
 - ‘#’ : increment per menit. Mulai dari 1
-b. Buatlah program c untuk menghentikan program di atas.
+2. Buatlah program c untuk menghentikan program di atas.
 NB: Dilarang menggunakan crontab dan tidak memakai argumen ketika menjalankan program.
 
 ### JAWAB:
