@@ -58,7 +58,7 @@ void crDaemon(){
   pid = fork();
 
   if (pid < 0){
-    exit(EXIT_FAIL);
+    exit(EXIT_FAILURE);
   }
 
   if (pid > 0){
@@ -70,7 +70,7 @@ void crDaemon(){
   sid = setsid();
 
   if (sid < 0){
-    exit(EXIT_FAIL);
+    exit(EXIT_FAILURE);
   }
 
   if ((chdir("/")) < 0){
