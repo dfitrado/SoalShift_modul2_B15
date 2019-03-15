@@ -274,4 +274,4 @@ pclose(cmd);
 if(!kill(pid, SIGKILL))
     printf("Process with pid of %d is successfully killed!\n", pid);
 ```
-``SIGKIL`` akan menggunakan command ``kill`` ke pid.
+``SIGKILL`` akan menggunakan command ``kill`` ke pid.
