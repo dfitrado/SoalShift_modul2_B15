@@ -144,7 +144,7 @@ int main(){
     pid_t pid, sid;
     pid = fork();
     if (pid < 0){
-      exit(EXIT_FAIL);
+      exit(EXIT_FAILURE);
   }
   if (pid > 0){
     exit(EXIT_SUCCESS);
@@ -152,10 +152,10 @@ int main(){
   umask(0);
   sid = setsid();
   if (sid < 0){
-    exit(EXIT_FAIL);
+    exit(EXIT_FAILURE);
   }
   if ((chdir("/")) < 0){
-    exit(EXIT_FAIL);
+    exit(EXIT_FAILURE);
   }
   close(STDIN_FILENO);
   close(STDOUT_FILENO);
