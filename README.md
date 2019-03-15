@@ -54,7 +54,7 @@ Catatan:
 - dilarang menggunakan crontab
 - Contoh nama file : makan_sehat1.txt, makan_sehat2.txt, dst
 
-### JAWAB:
+### JAWAB: [soal4.c] (/soal4.c)
 
 ### PENJELASAN:
 
