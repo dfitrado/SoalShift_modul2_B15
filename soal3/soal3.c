@@ -17,7 +17,7 @@ int main() {
 	if (child_id1 < 0) exit(EXIT_FAILURE);
 
 	if (child_id1 == 0) {
-		char *zip[] = {"unzip", "/home/wildangbudhi/Documents/SoalShift_modul2_B15/NO3/campur2.zip", NULL};
+		char *zip[] = {"unzip", "/home/wildangbudhi/Documents/SoalShift_modul2_B15/soal3/campur2.zip", NULL};
 		execvp(zip[0], zip);
 	} else {
 		while(wait(NULL) > 0); //wait until Process1 end
@@ -32,7 +32,7 @@ int main() {
 			close(pipeEnds1[1]); // close pipeEnds1 Write that connected to File Table 4
 			close(pipeEnds1[0]); // close pipeEnds1 Read that connected to File Table 3
 
-			char *ls[] = {"ls", "/home/wildangbudhi/Documents/SoalShift_modul2_B15/NO3/campur2", NULL};
+			char *ls[] = {"ls", "/home/wildangbudhi/Documents/SoalShift_modul2_B15/soal3/campur2", NULL};
 			execvp(ls[0], ls);
 		}		
 		else{
@@ -62,7 +62,7 @@ int main() {
 				close(pipeEnds1[1]);
 				read(pipeEnds2[0], hasil, sizeof(hasil));
 
-				FILE *f1 = fopen("/home/wildangbudhi/Documents/SoalShift_modul2_B15/NO3/daftar.txt", "w");
+				FILE *f1 = fopen("/home/wildangbudhi/Documents/SoalShift_modul2_B15/soal3/daftar.txt", "w");
 				fputs(hasil, f1);
 				fclose(f1);
 			}

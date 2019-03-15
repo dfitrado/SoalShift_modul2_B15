@@ -16,31 +16,31 @@ Catatan : Tidak boleh menggunakan crontab.
 
 ### PENJELASAN:
 1. Fungsi ``opendir(".")`` bertujuan untuk membaca file pada directory tempat program tersebut active. Variabel ``entry`` menyimpan informasi dari file yang dibaca pada directory seperti nama dll.
-```
-while(entry = readdir(gambar)){
-    int len = strlen(entry->d_name);
-    char *s = &entry->d_name[len - 4];
-    char *namafile;
-    if (strcmp(s, ".png") == 0){
-        memcpy(namafile, entry->d_name, strlen(entry->d_name) - 4);
-        char *grey = malloc(strlen("_grey") + strlen(entry->d_name) + 1 + strlen("/home/hp/modul2/gambar/"));
-        strcpy(grey, "/home/hp/modul2/gambar/");
-        strcat(grey, namafile);
-        strcat(grey, "_grey.png");
-        puts(grey);
-        puts(entry->d_name);
-        rename(entry->d_name, grey);
+    ```c
+    while(entry = readdir(gambar)){
+        int len = strlen(entry->d_name);
+        char *s = &entry->d_name[len - 4];
+        char *namafile;
+        if (strcmp(s, ".png") == 0){
+            memcpy(namafile, entry->d_name, strlen(entry->d_name) - 4);
+            char *grey = malloc(strlen("_grey") + strlen(entry->d_name) + 1 + strlen("/home/hp/modul2/gambar/"));
+            strcpy(grey, "/home/hp/modul2/gambar/");
+            strcat(grey, namafile);
+            strcat(grey, "_grey.png");
+            puts(grey);
+            puts(entry->d_name);
+            rename(entry->d_name, grey);
+        }
     }
-}
-```
-Fungsi readdir(gambar) berfungsi untuk membaca sebuah file pada directory gambar dan kemudian informasinya dimasukkan kedalam variable entry. Lalu, ``while(entry = readdir(gambar))`` digunakan untuk membaca semua file selama masih ada file yang belum terbaca. Untuk membaca namafile pada ``struct dirent`` dapat dengan mengakses attribute ``struct dirent d_name``. Variable s menyimpan nilai extension dari suatu file. 
+    ```
+    Fungsi readdir(gambar) berfungsi untuk membaca sebuah file pada directory gambar dan kemudian informasinya dimasukkan kedalam variable entry. Lalu, ``while(entry = readdir(gambar))`` digunakan untuk membaca semua file selama masih ada file yang belum terbaca. Untuk membaca namafile pada ``struct dirent`` dapat dengan mengakses attribute ``struct dirent d_name``. Variable s menyimpan nilai extension dari suatu file. 
 
 2. Kemudian, kita dapat mengubah nama file menjadi namafile_grey.png dan sesuai dengan directory tujuan.
-```
-strcpy(grey, "/home/hp/modul2/gambar/");
-strcat(grey, namafile);
-strcat(grey, "_grey.png");
-```
+    ```c
+    strcpy(grey, "/home/hp/modul2/gambar/");
+    strcat(grey, namafile);
+    strcat(grey, "_grey.png");
+    ```
 
 
 ## NO2
@@ -50,6 +50,22 @@ Catatan: Tidak boleh menggunakan crontab
 ### JAWAB:
 
 ### PENJELASAN:
+1. Lakukan pengambilan informasi Owner menggunakan fungsi ```getpwuid()``` dan Group menggunakan fungsi ```getgrgid()```.
+    ```c
+    struct stat info;
+    stat("/home/wildangbudhi/Documents/SoalShift_modul2_B15/NO2/hatiku/elen.ku", &info);
+    struct passwd *pw = getpwuid(info.st_uid);
+    struct group  *gr = getgrgid(info.st_gid);
+    ```
+
+2. Lakukan pengecekan Owner dengan mengambil member dari struct pw yaitu ```pw_name``` dan Group mengambil member dari struct gr yaitu ```gr_name```. Jika Owner dan Group nya adalah ```www-data``` maka lakukan penggantian permission file menjadi 777 dengan ```chmod()``` dan lakukan penghapusan file ```elen.ku``` dengan menggunakan fungsi ```remove()```
+    ```c
+    if(!strcmp(pw->pw_name, "www-data") && !strcmp(gr->gr_name, "www-data")){
+      chmod("/home/wildangbudhi/Documents/SoalShift_modul2_B15/NO2/hatiku/elen.ku",(__mode_t) atoi("0777"));
+      remove("/home/wildangbudhi/Documents/SoalShift_modul2_B15/NO2/hatiku/elen.ku");
+    }
+    ```
+
 
 
 ## NO3
