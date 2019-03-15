@@ -108,22 +108,22 @@ Catatan:
     ```c
     while(wait(NULL) > 0);
 		
-		// Process2
-		child_id2 = fork();
+	// Process2
+	child_id2 = fork();
 
-		if (child_id2 < 0) exit(EXIT_FAILURE);
+	if (child_id2 < 0) exit(EXIT_FAILURE);
 
-		if(child_id2 == 0){
-			dup2(pipeEnds1[1], STDOUT_FILENO); 
-			close(pipeEnds1[1]); 
-			close(pipeEnds1[0]); 
+	if(child_id2 == 0){
+		dup2(pipeEnds1[1], STDOUT_FILENO); 
+		close(pipeEnds1[1]); 
+		close(pipeEnds1[0]); 
 
-			char *ls[] = {"ls", "/home/wildangbudhi/Documents/SoalShift_modul2_B15/soal3/campur2", NULL};
-			execvp(ls[0], ls);
-		}		
-		else{
-            ....
-        }
+		char *ls[] = {"ls", "/home/wildangbudhi/Documents/SoalShift_modul2_B15/soal3/campur2", NULL};
+		execvp(ls[0], ls);
+	}		
+	else{
+        ....
+    }
     ```
 
     Dibutuhkan melakukan pipe dikarenakan dibutuhkan ouput dari proses ini yang akan digunakan untuk Proses selanjutnya. Maka kita perlu menghubungkan ```STDOUT``` dari proses ini kepada ```pipe``` bagian ```write``` Menggunakan seperti dibawah ini :
