@@ -54,7 +54,7 @@ Catatan:
 - dilarang menggunakan crontab
 - Contoh nama file : makan_sehat1.txt, makan_sehat2.txt, dst
 
-### JAWAB: 
+### JAWAB:
 
 ### PENJELASAN:
 1. Pertama, kita akan menginisialisasi direktori sebagai berikut:
@@ -177,3 +177,101 @@ NB: Dilarang menggunakan crontab dan tidak memakai argumen ketika menjalankan pr
 ### JAWAB:
 
 ### PENJELASAN:
+### 5a
+1. Pertama, kia akan membuat function ``getDate()`` yang akan me-return sebuah string tanggal dengan format yang ada di soal, yaitu ``dd:MM:yyyy-hh:mm``
+```
+char* getDate(){
+    time_t raw;
+    struct tm *timeinfo;
+    
+    char *re = (char *)calloc(20, sizeof(char));
+
+    time(&raw);                                     
+    timeinfo = localtime(&raw);                     
+
+    strftime(re, 20, "%d:%m:%Y-%R", timeinfo);    
+
+    return re;
+}
+```
+Array ``re`` ada sehingga nantinya akan membuat nilai dikembalikan ke dalam fungsi ``main()``. Kemudian, ``time_t`` akan disimpan ke dalam variabel raw ketika ada jam yang dipanggil dengan ``time``. Variabel ``raw`` ini akan dipass ke dalam fungsi ``localtime`` yang akan mengembalikan struct yang berisi local time. ``strftime`` berfungsi untuk mengambil data tanggal, waktu, bulan dan tahun dalam format ``dd:MM:yyyy-hh:mm``. Kita dapat menggunakan format specifier, sebagai berikut:
+- ``%d`` sebagai pengganti tanggal
+- ``%m`` sebagai pengganti bulan
+- ``%Y`` sebagai pengganti tahun
+- ``%R`` yang setara dengan jam dan menit dengan format hh:mm
+
+2. Kedua, kita dapat membuat sebuah fungsi untuk menyalin isi file /var/log/syslog ke dalam file log#.log di direktori yang telah kita buat.
+```
+void copyToDirectory(char* directory){
+    FILE *source, *out;
+    int i = 1;
+    char    ch,
+            newname[28],
+            src[]={"/var/log/syslog"};
+
+    while(i<=30){
+      ...
+    }
+}
+```
+File log ini akan dibuat sebanyak 1 kali setiap menitnya dan diulang sebanyak 30 kali.
+
+3. Menginisialisasi variabel yang dibutuhkan:
+```
+ while(i<=30){
+    source = fopen(src, "r");
+    snprintf(newname, 28, "%s/log%d.log", directory, i);
+
+    out = fopen(newname, "w");
+
+    if(source != NULL && out != NULL){
+        while ((ch = fgetc(source)) != EOF)
+              fputc(ch, out);
+
+         fclose(out);
+    }
+
+    i++;
+
+    fclose(source);
+    sleep(60);  
+}
+```
+- Array ``newname`` sebagai nama file output
+- ``ch`` sebagai menyimpan karakter yang akan disalin
+- ``i`` sebagai counter
+- Pointer ke file log di ``/var/log/syslog`` dan file output
+
+4. Kita panggil fungsi getDate() untuk mendapatkan nama direktori yang harus dibuat
+```
+if(!mkdir(date, S_IRWXU | S_IRWXO | S_IRWXG))
+    copyToDirectory(date);
+ ```
+
+5. Kemudian, kita dapat membuat direktori sesuai nama yang telah didapat dengan permission mode 777 dengan cara menggunakan bitwise OR operation terhadap:
+- ``S_IRWXG`` untuk read, write dan execute permission bagi group
+- ``S_IRWXU`` untuk read, write dan execute permission bagi owner
+- ``S_IRWXO`` untuk read, write dan execute permission bagi other atau user lain
+
+6. Apabila kita telah berhasil membuat direktori, kita bisa menjalankan fungsi ``copyToDirectory`` untuk membuat file-file log yang diambil dari ``/var/log/syslog`` ke dalam folder tersebut
+```
+free(date);
+```
+
+### 5b
+1. Menggunakan command ``pidof`` untuk mendapatkan pid dari sebuah proses:
+```
+FILE *cmd = popen("pidof /home/hp/Documents/sisop2/soal5a", "r");
+fgets(out, 7, cmd);
+```
+Shell command ``pidof`` akan mencari pid dari input string nama proses yang berjalan. Dalam kasus ini, adalah absolute path dari file soal sebelumnya, yaitu soal 5a.
+
+2. Isi dari array out akan dikonversi menjadi unsigned long integer dan disimpan di variabel pid dengan ``tipe pid_t``.
+```
+pid_t pid = strtoul(out, NULL, 10);
+pclose(cmd);
+
+if(!kill(pid, SIGKILL))
+    printf("Process with pid of %d is successfully killed!\n", pid);
+```
+``SIGKIL`` akan menggunakan command ``kill`` ke pid.
