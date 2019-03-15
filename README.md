@@ -54,9 +54,114 @@ Catatan:
 - dilarang menggunakan crontab
 - Contoh nama file : makan_sehat1.txt, makan_sehat2.txt, dst
 
-### JAWAB: [soal4.c] (/soal4.c)
+### JAWAB: 
 
 ### PENJELASAN:
+1. Pertama, kita akan menginisialisasi direktori sebagai berikut:
+```
+int main(){
+  pid_t child;
+  int status;
+  char dir[55];
+  char *uname;
+  uname = getlogin();
+  sprintf(dir, "/home/hp/Documents/makanan", uname);
+  ```
+  Kita menggunakan fungsi ``getlogin`` untuk mendapatkan ``uname``, lalu menggunakan fungssi ``sprintf`` untuk insialisasi alamat ke dalam variabel ``dir``
+  
+  2. Kedua, dengan bantuan ``dir`` yang telah dibuat, kita akan menginisialisasi file ``makan_enak.txt``
+  ```
+  int main(){
+      ...
+      char file[100];
+      sprintf(file, "hp/makan_enak.txt", dir);
+  ```
+  
+  3. Dikarenakan program yang akan terus berjalan dan memiliki jeda 5 detik, maka kita membuat program utamanya ke dalam ``while(1)`` dan dengan fungsi ``sleep(5)``
+  ```
+  int main(){
+      ...
+      while(1){
+      sleep(5);
+ ```
+ 
+ 4. Keempat, dengan menggunakan fungsi ``stat()`` pada library ``sys/stat.h`` dan ``time.h``, kita akan memeriksa kapan file ``makan_enak.txt`` terakhir diakses.
+  ```
+  int main(){
+      ...
+      while(1){
+      sleep(5);
+      struct stat filestat;
+      stat(file, &filestat);
+      time_t fileAccessed = filestat.st_atime;
+ ```
+ 
+ 5. Kemudian apabila perbandingan selisih waktu terakhir diakses dengan waktu saat ini kurang dari sama dengan 30 detik, maka akan membuat file ``makan_sehat%d.txt`` dengan ``%d`` yang merupakan bilangan bulat.
+   ```
+  int main(){
+      ...
+      int ct = 1;
+      while(1){
+              ...
+              if(difftime(time(NULL), fileAccessed) <= 30){
+                 char newfile[100];
+                 sprintf(newfile, "hp/makan_sehat%d.txt", dir, ct);
+ ```
+ 6. Membuat alamat file baru yang akan digunakan untuk penomoran file baru yang akan dibuat, dengan bantuan fungsi ``sprintf`` dan variabel ``ct``
+ ```
+  int main(){
+      ...
+      int ct = 1;
+      while(1){
+              ...
+              if(difftime(time(NULL), fileAccessed) <= 30){
+                 char newfile[100];
+                 sprintf(newfile, "hp/makan_sehat%d.txt", dir, ct);
+                 child = fork();
+                  if(child == 0){
+                  char *argv[] = {"cp", file, newfile, NULL};
+                  execv("/bin/cp", argv);
+                } 
+                while ((wait(&status)) > 0); 
+	              kill(child, SIGKILL);
+                ct++;
+ ```
+7. Setelah program utama selesai, maka kita akan menambahkan fungsi agar ``daemon`` terbuat.
+```
+  void crDaemon();
+  
+  int main(){
+    ...
+    crDaemon();
+    
+    while(1){
+    ...
+    }
+    
+    exit(EXIT_SUCCESS);
+  }
+  void crDaemon(){
+    pid_t pid, sid;
+    pid = fork();
+    if (pid < 0){
+      exit(EXIT_FAIL);
+  }
+  if (pid > 0){
+    exit(EXIT_SUCCESS);
+  }
+  umask(0);
+  sid = setsid();
+  if (sid < 0){
+    exit(EXIT_FAIL);
+  }
+  if ((chdir("/")) < 0){
+    exit(EXIT_FAIL);
+  }
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
+}
+```
 
 
 ## NO5
