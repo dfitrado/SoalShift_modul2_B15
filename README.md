@@ -60,12 +60,12 @@ Catatan:
 
 
 ## NO5
-Kerjakan poin a dan b di bawah:
+Kerjakan poin a dan b di bawah:<br />
 a. Buatlah program c untuk mencatat log setiap menit dari file log pada syslog ke /home/[user]/log/[dd:MM:yyyy-hh:mm]/log#.log
 Ket:
 - Per 30 menit membuat folder /[dd:MM:yyyy-hh:mm]
 - Per menit memasukkan log#.log ke dalam folder tersebut
-- ‘#’ : increment per menit. Mulai dari 1
+- ‘#’ : increment per menit. Mulai dari 1 <br />
 b. Buatlah program c untuk menghentikan program di atas.
 NB: Dilarang menggunakan crontab dan tidak memakai argumen ketika menjalankan program.
 
